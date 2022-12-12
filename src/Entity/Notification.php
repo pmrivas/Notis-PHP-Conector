@@ -3,17 +3,22 @@
 namespace TresErres\NotisConector\Entity;
 
 use TresErres\NotisConector\Constantes\Notifications;
+use TresErres\NotisConector\Error\InvalidLevelException;
+use TresErres\NotisConector\Error\InvalidRecipientsException;
 use TresErres\NotisConector\Error\InvalidTypeException;
 use TresErres\NotisConector\Error\NoTextException;
 
 class Notification
 {
     /** @var string */
-    private $type;
+    private $level;
+
+    /** @var string[] */
+    private $recipients;
 
     /** @var string */
-    private $user_id
-    ;
+    private $type;
+
     /** @var string|null */
     private $title;
 
@@ -24,23 +29,31 @@ class Notification
     private $link;
 
     /**
+     * @param string $level
      * @param string $type
-     * @param string $user_id
+     * @param string[] $recipients
      * @param string|null $title
      * @param string|null $description
      * @param string|null $link
      *
+     * @throws InvalidLevelException
      * @throws InvalidTypeException
      * @throws NoTextException
+     * @throws InvalidRecipientsException
      */
     public function __construct(
-        string $type,
-        string $user_id,
-        ?string $title = null,
-        ?string $description = null,
-        ?string $link = null
+        $level,
+        $type,
+        $recipients,
+        $title = null,
+        $description = null,
+        $link = null
     )
     {
+        if (!in_array($level, Notifications::NOTIFICATION_LEVELS)) {
+            throw new InvalidLevelException();
+        }
+
         if (!in_array($type, Notifications::NOTIFICATION_TYPES)) {
             throw new InvalidTypeException();
         }
@@ -49,8 +62,16 @@ class Notification
             throw new NoTextException();
         }
 
+        if (
+            empty($recipients) || !is_array($recipients)
+            || array_sum(array_map('is_string', $recipients)) !== count($recipients)
+        ) {
+            throw new InvalidRecipientsException();
+        }
+
+        $this->level = $level;
         $this->type = $type;
-        $this->user_id = $user_id;
+        $this->recipients = $recipients;
         $this->title = $title;
         $this->description = $description;
         $this->link = $link;
@@ -64,8 +85,9 @@ class Notification
     public function toArray(): array
     {
         return [
+            'level' => $this->level,
+            'recipients' => $this->recipients,
             'type' => $this->type,
-            'userId' => $this->user_id,
             'title' => $this->title,
             'description' => $this->description,
             'link' => $this->link

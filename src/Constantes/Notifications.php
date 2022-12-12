@@ -11,4 +11,9 @@ final class Notifications
         self::NOTIFICATION_TYPE_PERSONAL_PEDIDO_REVISION,
         self::NOTIFICATION_TYPE_PERSONAL_REGISTRO_FIRMADO_ACTUALIZADO
     ];
+
+    public const NOTIFICATION_LEVEL_USER = 'user';
+    public const NOTIFICATION_LEVELS = [
+        self::NOTIFICATION_LEVEL_USER
+    ];
 }
