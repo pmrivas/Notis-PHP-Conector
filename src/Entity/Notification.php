@@ -28,6 +28,9 @@ class Notification
     /** @var string */
     private $link;
 
+    /** @var string */
+    private $who;
+
     /**
      * @param string $level
      * @param string $type
@@ -35,6 +38,7 @@ class Notification
      * @param string|null $title
      * @param string|null $description
      * @param string|null $link
+     * @param string|null $who
      *
      * @throws InvalidLevelException
      * @throws InvalidTypeException
@@ -47,7 +51,8 @@ class Notification
         $recipients,
         $title = null,
         $description = null,
-        $link = null
+        $link = null,
+        $who = null
     )
     {
         if (!in_array($level, Notifications::NOTIFICATION_LEVELS)) {
@@ -75,6 +80,7 @@ class Notification
         $this->title = $title;
         $this->description = $description;
         $this->link = $link;
+        $this->who = $who;
     }
 
     /**
@@ -90,7 +96,8 @@ class Notification
             'type' => $this->type,
             'title' => $this->title,
             'description' => $this->description,
-            'link' => $this->link
+            'link' => $this->link,
+            'who' => $this->who
         ];
     }
 }
