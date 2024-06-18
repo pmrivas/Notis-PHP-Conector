@@ -5,6 +5,7 @@ namespace TresErres\NotisConector;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use TresErres\NotisConector\Entity\Notification;
+use TresErres\NotisConector\Entity\GetLinks;
 
 class NotisConector
 {
@@ -42,4 +43,15 @@ class NotisConector
             ]
         ]);
     }
+
+    /**
+     * Trae notificaciones para el $link especificado
+     *
+     * @throws GuzzleException
+     */
+    public function getLinks(GetLinks $getLinks)
+    {
+        $this->client->get('/usersbylink?' . http_build_query($getLinks->toArray()));
+    }
+
 }
