@@ -51,7 +51,7 @@ class NotisConector
      */
     public function getLinks(GetLinks $getLinks)
     {
-        $this->client->get('/usersbylink?' . http_build_query($getLinks->toArray()));
+        $this->client->get('/notifications/usersbylink?' . http_build_query($getLinks->toArray()));
     }
 
 }

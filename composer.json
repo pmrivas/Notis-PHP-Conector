@@ -2,7 +2,7 @@
     "name": "tres-erres/notis-conector",
     "description": "Conector PHP para microservicio de notificaciones",
     "type": "library",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "require": {
         "php": "^7.4.0|^8.1",
         "ext-curl": "*",
