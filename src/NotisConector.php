@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use TresErres\NotisConector\Entity\Notification;
 use TresErres\NotisConector\Entity\GetLinks;
+use TresErres\NotisConector\Entity\getLinktoMe;
+use TresErres\NotisConector\Entity\LinkasReacted;
 
 class NotisConector
 {
@@ -51,7 +53,35 @@ class NotisConector
      */
     public function getLinks(GetLinks $getLinks)
     {
-        $this->client->get('/notifications/usersbylink?' . http_build_query($getLinks->toArray()));
+        $datos = $this->client->get('/notifications/usersbylink?' . http_build_query($getLinks->toArray()));
+        return json_decode(trim($datos->getBody()), true);
     }
+
+    /**
+     * Trae notificaciones para el usuario en un $link especificado
+     *
+     * @throws GuzzleException
+     */
+    public function getLinktoMe(getLinktoMe $getLinktoMe)
+    {
+        $datos = $this->client->get('/notifications/linktome?' . http_build_query($getLinktoMe->toArray()));
+        return json_decode(trim($datos->getBody()), true);
+    }
+
+
+    /**
+     * Marca un link como "reacted"
+     *
+     * @throws GuzzleException
+     */
+    public function toggleReacted(LinkasReacted $linkasReacted)
+    {
+        $this->client->patch('/notifications/toggle-reacted', [
+            'json' => [
+                'data' => $linkasReacted->toArray()
+            ]
+        ]);
+    }
+
 
 }
